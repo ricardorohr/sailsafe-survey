@@ -1,0 +1,70 @@
+/* SailSafe — design tokens (Open Water).
+   The whole look lives here. Retune the brand by editing these variables;
+   nothing downstream hardcodes a color or size. */
+
+:root {
+  /* Type */
+  --font: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Outfit', -apple-system, system-ui, sans-serif;
+
+  /* Surfaces */
+  --bg: #e4eff2;
+  --bg-grad-top: #dceaef;
+  --surface: #ffffff;
+  --surface-2: #eff7f8;
+
+  /* Ink */
+  --ink: #0a2230;
+  --ink-soft: #39525f;
+  --muted: #6a828e;
+
+  /* Accent — Open Water teal */
+  --accent: #0c9ca9;
+  --accent-600: #0a8794;
+  --accent-700: #08737f;
+  --accent-soft: #d7f1f3;
+
+  /* Status — the health-passport language */
+  --green: #15a36a;
+  --green-soft: #e4f6ee;
+  --amber: #e0930a;
+  --amber-soft: #fbf0dc;
+  --amber-ink: #946203;
+  --red: #d8453e;
+  --red-soft: #fbe7e6;
+  --red-ink: #9a2b26;
+
+  /* Lines */
+  --border: #d7e6ea;
+  --border-strong: #bfd4da;
+
+  /* Radii */
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(10, 34, 48, 0.06), 0 1px 3px rgba(10, 34, 48, 0.05);
+  --shadow-md: 0 8px 24px rgba(10, 34, 48, 0.09);
+  --shadow-lg: 0 20px 54px rgba(10, 34, 48, 0.14);
+
+  /* Spacing scale */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 32px;
+  --s-8: 40px;
+  --s-9: 56px;
+  --s-10: 72px;
+
+  /* Layout */
+  --maxw: 600px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
