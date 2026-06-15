@@ -26,7 +26,7 @@ const SAMPLE_OPEN = [
   'Acho a ideia ótima, principalmente o aviso de quando fazer cada coisa.',
   'Tenho receio de mais um app pra alimentar, mas o status visual ajuda.',
 ]
-const SAMPLE_CONTACTS = ['(11) 98888-1212', 'maria.veleira@email.com', '@catamarã.sp', 'joao.angra@gmail.com', '(21) 99777-3030']
+const SAMPLE_CONTACTS = ['maria.veleira@gmail.com', 'joao.angra@gmail.com', 'kiana.cat@outlook.com', 'renata.vela@gmail.com', 'capitao.r@hotmail.com']
 
 export function makeSampleData(n = 48) {
   const responses = []
@@ -38,10 +38,11 @@ export function makeSampleData(n = 48) {
       row[q.name] = sampleValue(q)
       if (q.followUp) row[q.followUp.name] = Math.random() < 0.28 ? pick(SAMPLE_OPEN) : null
     }
-    row.wants_future_tests = pick(['sim_topo', 'sim_topo', 'talvez', 'prefiro_nao', null])
+    row.beta_interesse = pick(['sim_quero_beta', 'sim_quero_beta', 'talvez', 'prefiro_nao', null])
     responses.push(row)
 
-    if (Math.random() < 0.32) {
+    // Email only when they're in (or maybe) the beta, mirroring the real flow.
+    if ((row.beta_interesse === 'sim_quero_beta' || row.beta_interesse === 'talvez') && Math.random() < 0.7) {
       contacts.push({
         id: 'c-' + i,
         created_at: created,

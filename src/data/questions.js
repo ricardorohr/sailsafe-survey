@@ -2,13 +2,14 @@
 // Edit copy, options, order, or branching here; the UI is fully config-driven.
 //
 // Field types: 'single' | 'multi' | 'likert' (1–5) | 'scale' (0–10) | 'open'
-//   `name`       snake_case column it maps to in the `survey_responses` table
+//   `name`       snake_case column it maps to in the "Respostas" tab of the Sheet
 //   `isOther`    on an option → reveals a free-text input ("Outro / especificar")
-//   `exclusive`  on an option → clears the others when picked (e.g. "Nenhum desses")
+//   `exclusive`  on an option → clears the others when picked (multi only)
 //   `followUp`   rendered inline UNDER its parent question (never a separate step),
 //                shown only when `showIf(answers)` is true (or when there is no showIf)
 //
 // This array is also your codebook: option `value`s are exactly what gets stored.
+// Order matters — it drives the on-screen sequence and the "Pergunta X de N" label.
 
 export const questions = [
   // ── Seção 1 — Perfil ──────────────────────────────────────────────────
@@ -109,7 +110,7 @@ export const questions = [
     section: 'Como cuida da manutenção hoje',
     type: 'multi',
     required: true,
-    title: 'Hoje, como você acompanha o que já foi feito e o que falta na manutenção?',
+    title: 'Hoje, como você acompanha o que já foi feito e o que ainda falta na manutenção?',
     help: 'Pode marcar mais de uma.',
     options: [
       { value: 'papel', label: 'Caderno ou ficha em papel a bordo' },
@@ -148,6 +149,46 @@ export const questions = [
     ],
   },
   {
+    id: 'q_spend',
+    name: 'gastos_manutencao',
+    section: 'Como cuida da manutenção hoje',
+    type: 'single',
+    required: true,
+    title: 'Quanto você estima gastar por ano com manutenção e reparos (peças e mão de obra)?',
+    help: 'Pensando só em manutenção e reparos, fora taxas de marina e seguro. Sem julgamento, é só pra entender a realidade.',
+    options: [
+      { value: 'ate_3k', label: 'Até R$ 3.000' },
+      { value: '3k_8k', label: 'R$ 3.000 a R$ 8.000' },
+      { value: '8k_20k', label: 'R$ 8.000 a R$ 20.000' },
+      { value: '20k_50k', label: 'R$ 20.000 a R$ 50.000' },
+      { value: 'acima_50k', label: 'Acima de R$ 50.000' },
+      { value: 'nao_sei_estimar', label: 'Não sei estimar' },
+      { value: 'prefiro_nao_responder', label: 'Prefiro não responder' },
+    ],
+  },
+  {
+    id: 'q_behavior',
+    name: 'comportamento_duvida',
+    section: 'Como cuida da manutenção hoje',
+    type: 'multi',
+    required: true,
+    title:
+      'Na vida real, quando você fica na dúvida se algo precisa de manutenção, o que costuma acontecer?',
+    help: 'Pode marcar mais de uma. Não existe resposta certa, só queremos entender a real.',
+    options: [
+      { value: 'pergunto_profissional', label: 'Pergunto para o mecânico ou pessoa de confiança' },
+      { value: 'youtube_foruns', label: 'Pesquiso no YouTube ou em fóruns' },
+      {
+        value: 'grupos_mensageiro',
+        label: 'Pergunto em grupos de WhatsApp ou Facebook de velejadores',
+      },
+      { value: 'manual_fabricante', label: 'Consulto o manual do fabricante' },
+      { value: 'espero_dar_problema', label: 'Espero dar problema para entender o que era' },
+      { value: 'nao_sei_da_duvida', label: 'Geralmente nem sei que essa dúvida existe' },
+      { value: 'outro', label: 'Outro (especificar)', isOther: true },
+    ],
+  },
+  {
     id: 'q8',
     name: 'teve_problema',
     section: 'Como cuida da manutenção hoje',
@@ -175,7 +216,7 @@ export const questions = [
     section: 'Ritual antes de sair',
     type: 'single',
     required: true,
-    title: 'Antes de sair com o barco, você faz algum tipo de checklist ou verificação?',
+    title: 'Antes de zarpar, você faz algum tipo de checklist ou verificação?',
     options: [
       {
         value: 'checklist_fixo',
@@ -193,17 +234,26 @@ export const questions = [
     },
   },
 
-  // ── Seção 4 — Confiança e apps ───────────────────────────────────────
+  // ── Seção 4 — Estado do barco e apps ─────────────────────────────────
   {
     id: 'q10',
-    name: 'confianca_manutencao',
+    name: 'estado_manutencao',
     section: 'Confiança e apps',
-    type: 'likert',
+    type: 'single',
     required: true,
-    title:
-      'Numa escala de 1 a 5, quão confiante você está de que o seu barco está com a manutenção em dia?',
-    minLabel: '1 · Nada confiante',
-    maxLabel: '5 · Totalmente confiante',
+    title: 'Se o barco fosse um paciente, em qual sala de espera ele estaria?',
+    help: 'Sem julgamento, a gente só quer entender a real.',
+    // Options are in order from healthiest to most critical (encode as 1–5 in analysis).
+    options: [
+      { value: 'checkup_em_dia', label: 'Check-up anual em dia. Tudo sob controle.' },
+      { value: 'exames_atrasados', label: 'Alguns exames atrasados, mas nada grave (acho).' },
+      { value: 'precisa_cuidados', label: 'Precisa de cuidados, mas está funcionando.' },
+      {
+        value: 'apagando_incendios',
+        label: 'Vivo apagando incêndio. Manutenção é o que quebrou hoje.',
+      },
+      { value: 'sem_ideia', label: 'Sinceramente, não faço ideia de como ele está.' },
+    ],
   },
   {
     id: 'q11',
@@ -211,7 +261,7 @@ export const questions = [
     section: 'Confiança e apps',
     type: 'multi',
     required: true,
-    title: 'Quais apps ligados ao barco você usa hoje?',
+    title: 'Quais apps ligados ao barco já fazem parte da sua rotina?',
     help: 'Pode marcar mais de uma.',
     options: [
       { value: 'navegacao', label: 'Navegação/cartas (Navionics, Savvy Navvy etc.)' },
@@ -254,7 +304,7 @@ export const questions = [
     section: 'Reação ao conceito SailSafe',
     type: 'multi',
     required: true,
-    title: 'O que te deixaria com um pé atrás para usar um app assim?',
+    title: 'O que te deixaria com um pé atrás para usar um app desses?',
     help: 'Pode marcar mais de uma.',
     options: [
       { value: 'burocratico', label: 'Ser mais uma tarefa burocrática pra alimentar' },
@@ -291,9 +341,9 @@ export const questions = [
     section: 'Preço e intenção',
     type: 'scale',
     required: true,
-    title:
-      'Se esse app existisse hoje, bem feito e em português, qual a chance de você testar e, se gostasse, pagar por ele?',
-    minLabel: '0 · Nunca usaria',
+    // Now measures willingness-to-PAY only (trial intent is captured by the beta question at the end).
+    title: 'Se esse app existisse hoje, bem feito e em português, qual a chance de você pagar por ele?',
+    minLabel: '0 · Não pagaria',
     maxLabel: '10 · Com certeza',
   },
 ]

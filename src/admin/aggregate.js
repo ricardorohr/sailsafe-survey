@@ -76,12 +76,12 @@ export function aggregate(responses) {
     }
   }
 
-  // Testing interest (lives on responses, not in the questions array).
-  const wantsCounts = {}
+  // Beta interest (lives on responses, not in the questions array).
+  const betaCounts = {}
   for (const r of responses) {
-    const v = r.wants_future_tests
+    const v = r.beta_interesse
     if (!v) continue
-    wantsCounts[v] = (wantsCounts[v] || 0) + 1
+    betaCounts[v] = (betaCounts[v] || 0) + 1
   }
 
   const intent = perQuestion.find((s) => s.q.name === 'intencao_uso')
@@ -90,7 +90,7 @@ export function aggregate(responses) {
     total,
     perQuestion,
     openQuestions,
-    wantsCounts,
+    betaCounts,
     intentAvg: intent ? intent.avg : null,
   }
 }

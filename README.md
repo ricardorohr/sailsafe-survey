@@ -47,7 +47,7 @@ Open your Google Sheet:
 - **`Respostas`** — one row per submission, one column per question, plus `created_at` and `submission_id`.
 - **`Contatos`** — only the people who left a contact, with their `submission_id`.
 
-Use the Sheet's built-in tools (filters, pivot tables, charts) to analyze. Two columns carry most of the signal: **`tipo_embarcacao`** (are we reaching the right persona?) and **`intencao_uso`** (0–10 willingness to test and pay).
+Use the Sheet's built-in tools (filters, pivot tables, charts) to analyze. The columns that carry most of the signal: **`tipo_embarcacao`** (persona — segment everything by this, sailboat vs motorboat is the key read), **`intencao_uso`** (0–10 willingness to pay), **`estado_manutencao`** (the boat's self-reported "waiting room", ordered healthy→critical), **`gastos_manutencao`** (yearly spend tier), and **`beta_interesse`** (who wants the beta).
 
 The stored option values are your codebook — they're defined in [`src/data/questions.js`](./src/data/questions.js).
 
@@ -71,7 +71,7 @@ The survey is **config-driven**. To change wording, options, order, or branching
 - **Field types:** `single`, `multi`, `likert` (1–5), `scale` (0–10), `open`.
 - **`isOther: true`** on an option reveals a free-text input.
 - **`exclusive: true`** on an option (e.g. "Nenhum desses") clears the others when picked.
-- **`followUp`** renders an inline conditional question under its parent (shown when `showIf(answers)` is true). Follow-ups never add a step, so the progress bar stays "de 15".
+- **`followUp`** renders an inline conditional question under its parent (shown when `showIf(answers)` is true). Follow-ups never add a step, so the progress bar denominator only counts the main questions (currently "de 17").
 
 Retune the visual brand in [`src/styles/tokens.css`](./src/styles/tokens.css) — colors, type, spacing, radii all live there.
 

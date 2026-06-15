@@ -83,9 +83,9 @@ export default function Admin() {
   const { responses: rows, contacts } = useMemo(() => makeSampleData(48), [])
   const data = useMemo(() => aggregate(rows), [rows])
 
-  const simTopo = data.wantsCounts.sim_topo || 0
-  const talvez = data.wantsCounts.talvez || 0
-  const pctWouldTest = data.total ? Math.round(((simTopo + talvez) / data.total) * 100) : 0
+  const simBeta = data.betaCounts.sim_quero_beta || 0
+  const talvez = data.betaCounts.talvez || 0
+  const pctBeta = data.total ? Math.round(((simBeta + talvez) / data.total) * 100) : 0
   const hasOpen = data.openQuestions.some((o) => o.answers.length)
 
   return (
@@ -114,11 +114,11 @@ export default function Admin() {
         <section className="adm__kpis">
           <Kpi label="Respostas" value={data.total} />
           <Kpi
-            label="Intenção média (0–10)"
+            label="Intenção de pagar (0–10)"
             value={data.intentAvg != null ? data.intentAvg.toFixed(1) : '—'}
-            sub="chance de testar e pagar"
+            sub="média"
           />
-          <Kpi label="Testariam o app" value={pctWouldTest + '%'} sub={`${simTopo} disseram "Sim, topo"`} />
+          <Kpi label="Querem o beta" value={pctBeta + '%'} sub={`${simBeta} disseram "Sim, quero"`} />
           <Kpi label="Contatos deixados" value={contacts.length} />
         </section>
 

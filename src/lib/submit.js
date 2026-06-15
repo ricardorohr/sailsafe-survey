@@ -51,9 +51,9 @@ export function buildResponsePayload({ submissionId, answers, otherTexts }) {
     }
   }
 
-  // Testing interest is captured here (always), so the signal survives even
-  // when the person leaves no contact.
-  payload.wants_future_tests = answers.wants_future_tests || null
+  // Beta interest is captured here (always), so the signal survives even when
+  // the person leaves no email. The email itself goes to the separate contacts tab.
+  payload.beta_interesse = answers.beta_interesse || null
 
   return payload
 }

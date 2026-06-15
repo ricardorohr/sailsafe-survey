@@ -9,7 +9,7 @@ import ConfigBanner from './components/ConfigBanner'
 import IntroScreen from './components/IntroScreen'
 import ConceptScreen from './components/ConceptScreen'
 import QuestionCard from './components/QuestionCard'
-import ContactScreen from './components/ContactScreen'
+import ContactScreen, { BETA_EMAIL_REVEAL } from './components/ContactScreen'
 import ThankYouScreen from './components/ThankYouScreen'
 
 // One submission id, generated client-side, written to BOTH tables so responses
@@ -120,7 +120,11 @@ export default function App() {
       const n = questions.findIndex((q) => q.id === step.question.id) + 1
       return { show: true, value: n / TOTAL_QUESTIONS, label: `Pergunta ${n} de ${TOTAL_QUESTIONS}` }
     }
-    if (step.kind === 'concept') return { show: true, value: 11 / TOTAL_QUESTIONS, label: 'A ideia' }
+    if (step.kind === 'concept') {
+      // Sits right before q12, so its fill reflects the questions answered so far.
+      const before = questions.findIndex((q) => q.id === 'q12')
+      return { show: true, value: before / TOTAL_QUESTIONS, label: 'A ideia' }
+    }
     if (step.kind === 'contact') return { show: true, value: 1, label: 'Quase lá' }
     return { show: false } // intro, thankyou
   }, [step])
@@ -165,8 +169,12 @@ export default function App() {
               <ContactScreen
                 contact={contact}
                 onContact={setContact}
-                wants={answers.wants_future_tests || null}
-                onWants={(v) => setAnswer('wants_future_tests', v)}
+                beta={answers.beta_interesse || null}
+                onBeta={(v) => {
+                  setAnswer('beta_interesse', v)
+                  // If they're no longer in/maybe, drop any email they typed.
+                  if (!BETA_EMAIL_REVEAL.includes(v)) setContact('')
+                }}
                 honeypot={honeypot}
                 onHoneypot={setHoneypot}
                 onBack={goBack}
